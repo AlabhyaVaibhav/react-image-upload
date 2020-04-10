@@ -106,7 +106,7 @@ class NavBar extends Component {
     const {classes} = this.props;
     return (
         <Typography variant="h6" className={classes.title}>
-          {'Image Upload'}
+          {this.props.title}
         </Typography>
       );
   };
