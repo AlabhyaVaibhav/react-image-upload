@@ -1,5 +1,6 @@
 export function submit(selectedFile){
- 
+    console.log(selectedFile);
+    return;
     var fd = new FormData();
  
     fd.append('file', selectedFile);

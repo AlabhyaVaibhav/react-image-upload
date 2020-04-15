@@ -30,7 +30,12 @@ class ImageUpload extends Component{
 
             //Set the Base64 string return from FileReader as source.
             image.src = e.target.result;
-
+            image.sizeArray = [
+                [755,450],
+                [365,450],
+                [365,212],
+                [380,380]
+            ]
             console.log(image)
             
 
@@ -39,7 +44,10 @@ class ImageUpload extends Component{
                 var height = this.height;
                 var width = this.width;
                 var src = this.src;
+                var sizeArray = this.sizeArray;
                 if (height == 1024 || width == 1024) {
+                    
+                    // Blog from the image
                     var byteString = atob(src.split(',')[1]);
                     var mimeString = src.split(',')[0].split(':')[1].split(';')[0];
                     var ab = new ArrayBuffer(byteString.length);
@@ -48,19 +56,26 @@ class ImageUpload extends Component{
                         ia[i] = byteString.charCodeAt(i);
                     }
                     var src = new Blob([ab], {type: mimeString});
-                    let a = Resizer.imageFileResizer(
-                        src,
-                        300,
-                        300,
-                        'JPEG',
-                        100,
-                        0,
-                        uri => {
-                            console.log(uri)
-                        },
-                        'blob'
-                    );
-                    console.log(a);
+
+                    // Resize
+                    sizeArray.map(dim => {
+                        Resizer.imageFileResizer(
+                            src,dim[0],dim[1],'JPEG',100,0,
+                            uri => {
+                                var fd = new FormData();
+                                fd.append('file', uri);
+                                var request = new XMLHttpRequest();
+                                request.onreadystatechange = function() {
+                                if (this.readyState === 4 && this.status === 200) {
+                                    alert('Uploaded!');
+                                }
+                            };
+                            request.open("POST", "https://us-central1-tutorial-e6ea7.cloudfunctions.net/fileUpload", true);
+                            request.send(fd);
+                            },
+                            'blob'
+                        );
+                    });
                 }else{
                     console.log("File Cannot be uploaded")
                 }
