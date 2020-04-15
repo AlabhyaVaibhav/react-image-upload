@@ -53,7 +53,9 @@ function Card(props){
             let card = <Grid item xs={4} className={classes.divider} onClick={(e)=> handleClick(e,item)}>
                             <Box component="span" display="Block" pt={0} mr={1.5} mb={1}>
                                 <Typography variant={"body1"} component={"h5"} className={classes.alignCenter}>
-                                    {/* icon if possible */}
+                                    {/* 
+                                        icon if possible 
+                                    */}
                                     <div className={`${classes.font14} ${classes.gray}`}>{item}</div>
                                 </Typography>
                             </Box>
@@ -61,9 +63,9 @@ function Card(props){
             cards.push(card);
         });
     }
-    console.log(cards)   
        
     return (
+        // TODO: Better design
         <div className={classes.boxShadow}>
             <Grid container >
                 {cards}               
