@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import NavBar from '../../components/NavBar';
 import { submit } from '../../utils/FileUpload';
 import Resizer from 'react-image-file-resizer';
+import { storage } from "../../utils/Firebase";
 
 class ImageUpload extends Component{
     constructor(props){
@@ -63,16 +64,35 @@ class ImageUpload extends Component{
                         Resizer.imageFileResizer(
                             src,dim[0],dim[1],'JPEG',100,0,
                             uri => {
-                                var fd = new FormData();
-                                fd.append('file', uri);
-                                var request = new XMLHttpRequest();
-                                request.onreadystatechange = function() {
-                                if (this.readyState === 4 && this.status === 200) {
-                                    alert('Uploaded!');
+                                console.log(uri)
+                                var result = '';
+                                var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                                var charactersLength = characters.length;
+                                for ( var i = 0; i < 4; i++ ) {
+                                result += characters.charAt(Math.floor(Math.random() * charactersLength));
                                 }
-                            };
-                            request.open("POST", "https://us-central1-tutorial-e6ea7.cloudfunctions.net/fileUpload", true);
-                            request.send(fd);
+                                let filename = result + dim[0] + 'x' + dim[1];
+                                const uploadTask = storage.ref('images/' + filename).put(uri);
+                                uploadTask.on('state_changed',
+                                (snapshot)=>{
+                                    // progress
+                                },
+                                (error)=>{
+                                    console.log(error);
+                                },()=>{
+                                    // complete function 
+                                    storage.ref('images').child(filename).getDownloadURL().then(url => {
+                                        if(window.localStorage.getItem('images')){
+                                            let currentLS = window.localStorage.getItem('images');
+                                            currentLS = JSON.parse(currentLS);
+                                            currentLS.push({url})
+                                            window.localStorage.setItem('images',JSON.stringify(currentLS))   
+                                        }else{
+                                            let data = [{url}]
+                                            window.localStorage.setItem('images',JSON.stringify(data));
+                                        }
+                                    });
+                                });
                             },
                             'blob'
                         );
