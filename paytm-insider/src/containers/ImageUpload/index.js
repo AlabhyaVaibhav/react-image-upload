@@ -81,15 +81,18 @@ class ImageUpload extends Component{
                                     console.log(error);
                                 },()=>{
                                     // complete function 
-                                    storage.ref('images').child(filename).getDownloadURL().then(url => {
+                                    storage.ref('images').child(filename).getDownloadURL().then((url,filename) => {
                                         if(window.localStorage.getItem('images')){
                                             let currentLS = window.localStorage.getItem('images');
                                             currentLS = JSON.parse(currentLS);
-                                            currentLS.push({url})
+                                            currentLS.push(url);
                                             window.localStorage.setItem('images',JSON.stringify(currentLS))   
                                         }else{
-                                            let data = [{url}]
-                                            window.localStorage.setItem('images',JSON.stringify(data));
+                                            window.localStorage.setItem('images',JSON.stringify([]));
+                                            let currentLS = window.localStorage.getItem('images');
+                                            currentLS = JSON.parse(currentLS);
+                                            currentLS.push(url);
+                                            window.localStorage.setItem('images',JSON.stringify(currentLS))   
                                         }
                                     });
                                 });
@@ -131,7 +134,6 @@ class ImageUpload extends Component{
             <div className="App">
                 {/* could use better design and style  */}
                 <input type="file" name="avatar" onChange={this.fileChangedHandler} />
-                    <button type="button" onClick={this.handleSubmit} > Upload </button>
                     { $imagePreview }
             </div>
             </div>
