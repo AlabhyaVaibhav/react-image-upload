@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import NavBar from '../../components/NavBar';
 import { submit } from '../../utils/FileUpload';
-import { cropImages } from '../../utils/ImageUtils';
 import Resizer from 'react-image-file-resizer';
 
 class ImageUpload extends Component{
@@ -13,6 +12,8 @@ class ImageUpload extends Component{
             imagePreviewUrl: null,
           };
     }
+
+    
 
     fileChangedHandler = event => {
         this.setState({

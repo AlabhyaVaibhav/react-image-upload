@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^7.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-firebase": "^2.2.8",
     "react-image-crop": "^8.6.2",
     "react-image-file-resizer": "^0.2.3",
     "react-images-upload": "^1.2.8",
@@ -25,6 +26,9 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "engines": {
+    "node": ">=8.16.0"
   },
   "browserslist": {
     "production": [
