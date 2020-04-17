@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import NavBar from '../../components/NavBar';
-import { submit } from '../../utils/FileUpload';
 import Resizer from 'react-image-file-resizer';
 import { storage } from "../../utils/Firebase";
 
@@ -115,14 +114,6 @@ class ImageUpload extends Component{
         console.log(this.state.selectedFile)
     }
     
-
-    handleSubmit = () => {
-        if(this.state.selectedFile){
-
-            submit(this.state.selectedFile);
-        }
-    }
-
     render(){
         let $imagePreview = (<div className="previewText image-container">Please select an Image for Preview</div>);
         if (this.state.imagePreviewUrl) {
